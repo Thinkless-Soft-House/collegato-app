@@ -1,0 +1,2 @@
+--- Gerar apk ---
+eas build -p android --profile preview
