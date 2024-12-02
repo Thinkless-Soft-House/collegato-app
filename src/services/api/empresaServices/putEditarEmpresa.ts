@@ -12,7 +12,7 @@ export async function putEditarEmpresa(empresa: Empresa): Promise<RequestResult<
         logo: empresa.logo,
         nome: empresa.nome,
         telefone: empresa.telefone,
-        cpfCnpj: Number(empresa.cpfCnpj),
+        cpfCnpj: empresa.cpfCnpj,
         cep: Number(empresa.cep),
         municipio: empresa.municipio,
         estado: empresa.estado,

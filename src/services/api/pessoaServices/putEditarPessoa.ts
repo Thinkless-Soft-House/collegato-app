@@ -10,7 +10,7 @@ export async function putEditarPessoa(pessoa: Pessoa): Promise<RequestResult<Pes
     let data: PessoaUpdateDTO = {
         id: pessoa.id,
         nome: pessoa.nome,
-        cpfCnpj: Number(pessoa.cpfCnpj),
+        cpfCnpj: pessoa.cpfCnpj,
         municipio: pessoa.municipio,
         estado: pessoa.estado,
         pais: pessoa.pais,

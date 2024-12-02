@@ -1,6 +1,6 @@
 export class PessoaCreateDTO {
   nome: string;
-  cpfCnpj: number;
+  cpfCnpj: string;
   municipio: string;
   estado: string;
   pais: string;
@@ -15,7 +15,7 @@ export class PessoaCreateDTO {
 export class PessoaUpdateDTO {
   id: number;
   nome: string;
-  cpfCnpj: number;
+  cpfCnpj: string;
   municipio: string;
   estado: string;
   pais: string;

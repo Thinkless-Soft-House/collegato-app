@@ -40,12 +40,12 @@ let schema = yup.object({
     nome: yup.string().required('Campo obrigatório'),
     telefone: yup.string().required('Campo obrigatório'),
     cpfCnpj: yup.string().required('Campo obrigatório'),
-    cep: yup.string().required('Campo obrigatório'),
-    municipio: yup.string().required('Campo obrigatório'),
-    estado: yup.string().required('Campo obrigatório'),
-    pais: yup.string().required('Campo obrigatório'),
-    endereco: yup.string().required('Campo obrigatório'),
-    numeroEndereco: yup.string().required('Campo obrigatório'),
+    cep: yup.string(),
+    municipio: yup.string(),
+    estado: yup.string(),
+    pais: yup.string(),
+    endereco: yup.string(),
+    numeroEndereco: yup.string(),
 });
 
 const MyCompany: React.FC = () => {

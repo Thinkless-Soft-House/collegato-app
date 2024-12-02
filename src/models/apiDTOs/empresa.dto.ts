@@ -2,7 +2,7 @@ export class EmpresaCreateDTO {
     logo: string;
     nome: string;
     telefone: string;
-    cpfCnpj: number;
+    cpfCnpj: string;
     cep: number;
     municipio: string;
     estado: string;
@@ -18,7 +18,7 @@ export class EmpresaUpdateDTO {
     logo: string;
     nome: string;
     telefone: string;
-    cpfCnpj: number;
+    cpfCnpj: string;
     cep: number;
     municipio: string;
     estado: string;
