@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "Dynamo-Collegato",
+    "name": "com.thinkless.Dynamo.Collegatov2",
     "slug": "Dynamo-Collegato",
     "version": "1.0.3",
     "orientation": "portrait",
@@ -29,9 +29,9 @@
         "expo-build-properties",
         {
           "android": {
-            "compileSdkVersion": 33,
-            "targetSdkVersion": 33,
-            "buildToolsVersion": "33.0.2"
+            "compileSdkVersion": 34,
+            "targetSdkVersion": 34,
+            "buildToolsVersion": "34.0.0"
           },
           "ios": {
             "deploymentTarget": "17.0"
@@ -50,9 +50,7 @@
       "fallbackToCacheTimeout": 0,
       "url": "https://u.expo.dev/4329dc4b-1c5c-4ca1-ba9b-496b82066331"
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.thinkless.Dynamo.Collegatov2",
