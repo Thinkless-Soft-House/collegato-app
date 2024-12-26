@@ -1,31 +1,40 @@
-import { useCallback, useContext, useEffect, useState } from 'react';
-import { View } from 'react-native';
-import { Button, Chip, Text } from 'react-native-paper';
-import { CommonActions, useNavigation } from '@react-navigation/native';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { MotiView } from 'moti';
-import { LinearProgress } from '@rneui/themed';
+import { useCallback, useContext, useEffect, useState } from "react";
+import { View } from "react-native";
+import { Button, Chip, Text } from "react-native-paper";
+import { CommonActions, useNavigation } from "@react-navigation/native";
+import { NativeStackNavigationProp } from "@react-navigation/native-stack";
+import { MotiView } from "moti";
+import { LinearProgress } from "@rneui/themed";
 
-import SemiHeader from '../../../components/SemiHeader';
-import Alerta from '../../../components/Alerta';
+import SemiHeader from "../../../components/SemiHeader";
+import Alerta from "../../../components/Alerta";
 
-import styles from './styles';
-import { ROUTES } from '../../../routes/config/routesNames';
-import { globalColors } from '../../../global/styleGlobal';
-import { AuthContext, ILoginData } from '../../../services/auth';
-import { postReservaReport } from '../../../services/api/ReservaServices/postReservaReport';
-import { NotificacaoContext, NotificacaoContextData } from '../../../contexts/NotificacaoProvider';
-import { DatePickerModal } from 'react-native-paper-dates';
-import Input from '../../../components/Input';
-import { getDataLocalZone } from '../../../helpers/dataHelpers';
-import { addDays, setDate } from 'date-fns';
+import styles from "./styles";
+import { ROUTES } from "../../../routes/config/routesNames";
+import { globalColors } from "../../../global/styleGlobal";
+import { AuthContext, ILoginData } from "../../../services/auth";
+import { postReservaReport } from "../../../services/api/ReservaServices/postReservaReport";
+import {
+  NotificacaoContext,
+  NotificacaoContextData,
+} from "../../../contexts/NotificacaoProvider";
+import { DatePickerModal } from "react-native-paper-dates";
+import Input from "../../../components/Input";
+import { getDataLocalZone } from "../../../helpers/dataHelpers";
+import { addDays, setDate } from "date-fns";
+import { UsuarioLoginDTO } from "../../../models/apiDTOs/usuario.dto";
+import { getTodosUsuarios } from "../../../services/api/usuarioServices/getTodosUsuarios";
 
 const Report: React.FC = () => {
   const { usuarioLogado, pessoaLogada } = useContext<ILoginData>(AuthContext);
   const [showProgressBar, setShowProgressBar] = useState<boolean>(false);
   const navigation = useNavigation<NativeStackNavigationProp<any>>();
-  const { showNotificacao } = useContext<NotificacaoContextData>(NotificacaoContext);
-  const [range, setRange] = useState({ startDate: undefined, endDate: undefined });
+  const { showNotificacao } =
+    useContext<NotificacaoContextData>(NotificacaoContext);
+  const [range, setRange] = useState({
+    startDate: undefined,
+    endDate: undefined,
+  });
   const [open, setOpen] = useState(false);
   const [chipSelected, setChipSelected] = useState<number>();
 
@@ -49,9 +58,7 @@ const Report: React.FC = () => {
     navigation.dispatch(
       CommonActions.reset({
         index: 0,
-        routes: [
-          { name: ROUTES.homeMenu },
-        ],
+        routes: [{ name: ROUTES.homeMenu }],
       })
     );
   }
@@ -65,23 +72,33 @@ const Report: React.FC = () => {
 
   async function onPressReceberRelatorio() {
     setShowProgressBar(true);
-    let resultado = await postReservaReport(usuarioLogado.id, range.startDate, range.endDate);
+    let resultado = await postReservaReport(
+      usuarioLogado.id,
+      range.startDate,
+      range.endDate
+    );
     setShowProgressBar(false);
-    showNotificacao(resultado.message, resultado.success ? 'success' : 'danger');
+    showNotificacao(
+      resultado.message,
+      resultado.success ? "success" : "danger"
+    );
   }
 
   return (
     <>
-      <SemiHeader goBack={onPressBack} titulo='Relátórios' />
+      <SemiHeader goBack={onPressBack} titulo="Relátórios" />
       <View style={styles.contain}>
-        <Text style={{paddingHorizontal: 20}} variant="titleMedium">Selecione o intervalo para filtrar o relatório:</Text>
+        <Text style={{ paddingHorizontal: 20 }} variant="titleMedium">
+          Selecione o intervalo para filtrar o relatório:
+        </Text>
 
         <View style={styles.containChip}>
           <Chip
             compact
             style={styles.chip}
             selected={chipSelected == 7}
-            onPress={() => onPressChip(7)}>
+            onPress={() => onPressChip(7)}
+          >
             Últimos 7 Dias
           </Chip>
 
@@ -89,7 +106,8 @@ const Report: React.FC = () => {
             compact
             style={styles.chip}
             selected={chipSelected == 15}
-            onPress={() => onPressChip(15)}>
+            onPress={() => onPressChip(15)}
+          >
             Últimos 15 Dias
           </Chip>
 
@@ -97,7 +115,8 @@ const Report: React.FC = () => {
             compact
             style={styles.chip}
             selected={chipSelected == 30}
-            onPress={() => onPressChip(30)}>
+            onPress={() => onPressChip(30)}
+          >
             Últimos 30 Dias
           </Chip>
         </View>
@@ -105,12 +124,11 @@ const Report: React.FC = () => {
         <View style={styles.containFilter}>
           <DatePickerModal
             locale="pt"
-            label='Selecione o intervalo do relatório'
-            startLabel='Início'
-            endLabel='Fim'
-            saveLabel='Confirmar'
+            label="Selecione o intervalo do relatório"
+            startLabel="Início"
+            endLabel="Fim"
+            saveLabel="Confirmar"
             mode="range"
-
             visible={open}
             onDismiss={onDismiss}
             startDate={range.startDate}
@@ -123,18 +141,18 @@ const Report: React.FC = () => {
             label="Data de Início"
             onPress={() => setOpen(true)}
             editable={false}
-            typeMask='datetime'
-            keyboardType='number-pad'
-            value={getDataLocalZone(range.startDate)}
+            typeMask="datetime"
+            keyboardType="number-pad"
+            value={getDataLocalZone(range.endDate)}
           />
 
           <Input
             style={styles.inputs}
             label="Data Final"
-            typeMask='datetime'
+            typeMask="datetime"
             onPress={() => setOpen(true)}
-            keyboardType='number-pad'
-            value={getDataLocalZone(range.endDate)}
+            keyboardType="number-pad"
+            value={getDataLocalZone(range.startDate)}
           />
         </View>
 
@@ -164,13 +182,17 @@ const Report: React.FC = () => {
             RECEBER RELATÓRIO DE AGENDAMENTOS
           </Button>
 
-          <Alerta textStyle={{ fontSize: 16 }} style={styles.alerta} tipo='warning'>
-            Todos os relatórios desta tela, serão encaminhados para o e-mail: {usuarioLogado.login}
+          <Alerta
+            textStyle={{ fontSize: 16 }}
+            style={styles.alerta}
+            tipo="warning"
+          >
+            Todos os relatórios desta tela, serão encaminhados para o e-mail logado.
           </Alerta>
         </View>
       </View>
     </>
-  )
-}
+  );
+};
 
 export default Report;
