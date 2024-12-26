@@ -35,7 +35,6 @@ export async function postAdicionarUsuario(
     pessoa: pessoaData,
     empresaId: usuario.empresaId == 0 ? null : usuario.empresaId,
   };
-  console.log("criado o usuario:", usuario.pessoa.cpfCnpj);
   return apiBase
     .post(`usuario`, data)
     .then((resp) => {

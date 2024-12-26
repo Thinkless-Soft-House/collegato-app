@@ -13,10 +13,6 @@ export function removerPontuacaoDocumento(documento: string | number): string {
     .replace(/[^a-zA-Z0-9 ]/g, "")
     .replace(" ", "");
 
-  if (documento.length < 11) {
-    documento = documento.padStart(11, "0");
-  }
-
   return documento;
 }
 

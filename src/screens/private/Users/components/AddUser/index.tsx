@@ -276,7 +276,7 @@ const AddUser: React.FC = () => {
 
   async function autoCompleteLocation(cep: string) {
     if (cep.length == 9) {
-      cep = removerPontuacaoDocumento(cep); // Remover pontuação do CEP
+      cep = removerPontuacaoDocumento(cep);
       setShowProgressBarCep(true);
 
       let resultado = await getBuscarEnderecoViaCEP(cep.toString());
@@ -630,13 +630,6 @@ const AddUser: React.FC = () => {
                 <LinearProgress color="#52c7e2" />
               </MotiView>
             )}
-            {/* <Button
-                    icon="map-marker"
-                    mode="text"
-                    onPress={() => autoCompleteLocation(getValues('cep'))}
-                >
-                    Buscar Endereço por CEP
-                </Button> */}
             {isCepVerified && (
               <>
                 <InputControl
