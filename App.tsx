@@ -1,118 +1,104 @@
-import React from 'react';
-
-import 'intl';
-import 'intl/locale-data/jsonp/en-US';
-import 'date-time-format-timezone';
-
-require('./react-native-paper-dates-config');
+import React, { useCallback, useEffect, useState } from "react";
 import {
-	SafeAreaView,
-	StatusBar,
-	View,
-	StyleSheet,
-	Platform,
-} from 'react-native';
-import { useFonts } from 'expo-font';
-import { DefaultTheme, Provider as PaperProvider } from 'react-native-paper';
-import 'react-native-gesture-handler';
+  SafeAreaView,
+  StatusBar,
+  View,
+  Platform,
+  StyleSheet,
+} from "react-native";
+import { NavigationContainer } from "@react-navigation/native";
+import { DefaultTheme, Provider as PaperProvider } from "react-native-paper";
+import * as SplashScreen from "expo-splash-screen";
+import * as Font from "expo-font";
+import { registerTranslation, pt } from "react-native-paper-dates";
 
-import { registerTranslation, pt } from 'react-native-paper-dates';
+import "intl";
+import "intl/locale-data/jsonp/en-US";
+import "date-time-format-timezone";
+import "react-native-gesture-handler";
 
-registerTranslation('pt', pt);
+import { globalColors } from "./src/global/styleGlobal";
+import AuthProvider from "./src/services/auth";
+import NotificacaoProvider from "./src/contexts/NotificacaoProvider";
+import AppRoutes from "./src/routes";
 
-// registerTranslation("br", {
-//     save: 'Salvar',
-//     selectSingle: 'Selecione a data',
-//     selectMultiple: 'Selecione as datas',
-//     selectRange: 'Selecione um período',
-//     notAccordingToDateFormat: (inputFormat) =>
-//         `O formato de data deve ser ${inputFormat}`,
-//     mustBeHigherThan: (date) => `Deve ser maior que ${date}`,
-//     mustBeLowerThan: (date) => `Deve ser menor que ${date}`,
-//     mustBeBetween: (startDate, endDate) =>
-//         `Deve estar entre ${startDate} - ${endDate}`,
-//     dateIsDisabled: 'Dia não permitido',
-//     previous: 'Anterior',
-//     next: 'Próximo',
-//     typeInDate: 'Digite a data',
-//     pickDateFromCalendar: 'Escolha a data do calendário',
-//     close: 'Fechar',
-// })
+SplashScreen.preventAutoHideAsync();
+registerTranslation("pt", pt);
 
-import { NavigationContainer } from '@react-navigation/native';
-import { globalColors } from './src/global/styleGlobal';
-
-import AuthProvider from './src/services/auth';
-import NotificacaoProvider from './src/contexts/NotificacaoProvider';
-import AppRoutes from './src/routes';
-
-const fontMontserrat = require('./assets/Montserrat-Regular.ttf');
+const fontMontserrat = require("./assets/Montserrat-Regular.ttf");
 
 const theme = {
-	...DefaultTheme,
-	dark: false,
-	colors: {
-		...DefaultTheme.colors,
-		primary: globalColors.primaryColor,
-		secondary: globalColors.secondaryColor,
-		tertiary: globalColors.tertiaryColor,
-		placeholder: globalColors.primaryColor,
-	},
+  ...DefaultTheme,
+  dark: false,
+  colors: {
+    ...DefaultTheme.colors,
+    primary: globalColors.primaryColor,
+    secondary: globalColors.secondaryColor,
+    tertiary: globalColors.tertiaryColor,
+    placeholder: globalColors.primaryColor,
+  },
 };
 
-const App: React.FC = () => {
-	const [loaded] = useFonts({
-		Montserrat: fontMontserrat,
-	});
+export default function App() {
+  const [appIsReady, setAppIsReady] = useState(false);
 
-	if (!loaded) {
-		return null;
-	}
+  useEffect(() => {
+    async function prepare() {
+      try {
+        // Carrega as fontes e outras configurações necessárias
+        await Font.loadAsync({ Montserrat: fontMontserrat });
+        // Simula uma pequena demora, se necessário
+        await new Promise((resolve) => setTimeout(resolve, 1000));
+      } catch (e) {
+        console.warn(e);
+      } finally {
+        setAppIsReady(true);
+      }
+    }
 
-	return (
-		<NavigationContainer>
-			<AuthProvider>
-				<NotificacaoProvider>
-					<PaperProvider theme={theme}>
-						{Platform.OS === 'ios' ? (
-							<MyStatusBar backgroundColor='#4F7C8A' />
-						) : (
-							<StatusBar backgroundColor='#4F7C8A' />
-						)}
-						<AppRoutes />
-					</PaperProvider>
-				</NotificacaoProvider>
-			</AuthProvider>
-		</NavigationContainer>
-	);
-};
+    prepare();
+  }, []);
 
-const STATUSBAR_HEIGHT = StatusBar.currentHeight;
-const APPBAR_HEIGHT = 44;
+  const onLayoutRootView = useCallback(() => {
+    if (appIsReady) {
+      SplashScreen.hideAsync();
+    }
+  }, [appIsReady]);
+
+  if (!appIsReady) {
+    return null;
+  }
+
+  return (
+    <View style={{ flex: 1 }} onLayout={onLayoutRootView}>
+      <NavigationContainer>
+        <AuthProvider>
+          <NotificacaoProvider>
+            <PaperProvider theme={theme}>
+              {Platform.OS === "ios" ? (
+                <MyStatusBar backgroundColor="#4F7C8A" />
+              ) : (
+                <StatusBar backgroundColor="#4F7C8A" />
+              )}
+              <AppRoutes />
+            </PaperProvider>
+          </NotificacaoProvider>
+        </AuthProvider>
+      </NavigationContainer>
+    </View>
+  );
+}
 
 const MyStatusBarStyles = StyleSheet.create({
-	container: {
-		flex: 1,
-	},
-	statusBar: {
-		height: STATUSBAR_HEIGHT,
-	},
-	appBar: {
-		backgroundColor: '#79B45D',
-		height: APPBAR_HEIGHT,
-	},
-	content: {
-		flex: 1,
-		backgroundColor: '#33373B',
-	},
+  statusBar: {
+    height: StatusBar.currentHeight,
+  },
 });
 
 const MyStatusBar = ({ backgroundColor, ...props }) => (
-	<View style={[MyStatusBarStyles.statusBar, { backgroundColor }]}>
-		<SafeAreaView>
-			<StatusBar translucent backgroundColor={backgroundColor} {...props} />
-		</SafeAreaView>
-	</View>
+  <View style={[MyStatusBarStyles.statusBar, { backgroundColor }]}>
+    <SafeAreaView>
+      <StatusBar translucent backgroundColor={backgroundColor} {...props} />
+    </SafeAreaView>
+  </View>
 );
-
-export default App;

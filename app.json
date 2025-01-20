@@ -6,13 +6,16 @@
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
-    "splash": {
-      "image": "./assets/splash2.png",
-      "resizeMode": "cover",
-      "backgroundColor": "#ffffff"
-    },
     "jsEngine": "jsc",
     "plugins": [
+      [
+        "expo-splash-screen",
+        {
+          "backgroundColor": "#ffffff",
+          "image": "./assets/TopLogo.jpeg",
+          "resizeMode": "cover"
+        }
+      ],
       [
         "expo-notifications",
         {

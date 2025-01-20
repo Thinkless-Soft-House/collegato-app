@@ -187,7 +187,8 @@ const Report: React.FC = () => {
             style={styles.alerta}
             tipo="warning"
           >
-            Todos os relatórios desta tela, serão encaminhados para o e-mail logado.
+            Todos os relatórios desta tela, serão encaminhados para o e-mail
+            logado. (Favor conferir a caixa de SPAM)
           </Alerta>
         </View>
       </View>
